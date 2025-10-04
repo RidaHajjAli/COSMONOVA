@@ -55,7 +55,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Page Title
-st.title("🔭 Upload & Detect")
+st.title("Upload & Detect")
 st.markdown("### Search for exoplanet candidates by ID or name")
 
 # Check API health
@@ -64,15 +64,15 @@ try:
     if health_response.status_code == 200:
         health_data = health_response.json()
         if health_data.get("status") == "healthy":
-            st.success(f"✅ API Connected | {health_data.get('records', 0)} planets in database")
+            st.success(f"API Connected | {health_data.get('records', 0)} planets in database")
         else:
-            st.warning("⚠️ API connected but data not loaded")
+            st.warning("API connected but data not loaded")
     else:
-        st.error("❌ API is not responding properly")
+        st.error("API is not responding properly")
 except requests.exceptions.ConnectionError:
-    st.error("❌ Cannot connect to API. Make sure the backend is running on http://localhost:8000")
+    st.error("Cannot connect to API. Make sure the backend is running on http://localhost:8000")
 except Exception as e:
-    st.error(f"❌ Error: {str(e)}")
+    st.error(f"Error: {str(e)}")
 
 # Input Section
 st.markdown("---")
@@ -80,7 +80,7 @@ col1, col2 = st.columns([3, 1])
 
 with col1:
     planet_query = st.text_input(
-        "🌍 Enter Planet ID or Name",
+        "Enter Planet ID or Name",
         placeholder="e.g., 10811496 or K00753.01",
         help="You can search by numeric ID or KOI name (e.g., K00753.01)"
     )
@@ -88,7 +88,7 @@ with col1:
 with col2:
     st.write("")
     st.write("")
-    search_button = st.button("🔍 Detect Planet", use_container_width=True)
+    search_button = st.button("Detect Planet", use_container_width=True)
 
 # Display Statistics
 try:
@@ -96,7 +96,7 @@ try:
     if stats_response.status_code == 200:
         stats = stats_response.json()
         
-        st.markdown("### 📊 Database Statistics")
+        st.markdown("### Database Statistics")
         col1, col2, col3, col4 = st.columns(4)
         
         with col1:
@@ -112,7 +112,7 @@ except:
 
 # Search Logic
 if search_button and planet_query:
-    with st.spinner("🔎 Analyzing planet data..."):
+    with st.spinner("Analyzing planet data..."):
         try:
             response = requests.post(
                 f"{API_BASE_URL}/detect",
@@ -125,22 +125,21 @@ if search_button and planet_query:
                 
                 # Display Results
                 st.markdown("---")
-                st.markdown("## 🎯 Detection Results")
+                st.markdown("### Detection Results")
                 
-                # Main Result Card
-                st.markdown('<div class="result-box">', unsafe_allow_html=True)
+               
                 
                 col1, col2 = st.columns([2, 1])
                 
                 with col1:
-                    st.markdown(f"### 🪐 {result['name']}")
+                    st.markdown(f"### {result['name']}")
                     st.markdown(f"**ID:** {result['id']}")
                     st.markdown(f"**Disposition:** {result['predicted_disposition']}")
                     
                     if result['is_confirmed']:
-                        st.markdown('<p class="confirmed">✅ CONFIRMED CANDIDATE</p>', unsafe_allow_html=True)
+                        st.markdown('<p class="confirmed">CONFIRMED CANDIDATE</p>', unsafe_allow_html=True)
                     else:
-                        st.markdown('<p class="false-positive">❌ FALSE POSITIVE</p>', unsafe_allow_html=True)
+                        st.markdown('<p class="false-positive">FALSE POSITIVE</p>', unsafe_allow_html=True)
                 
                 with col2:
                     st.markdown("### Probability")
@@ -186,22 +185,22 @@ if search_button and planet_query:
                 st.plotly_chart(fig, use_container_width=True)
                 
                 # Additional Information
-                st.markdown("### 📝 Interpretation")
+                st.markdown("### Interpretation")
                 
-                if result['probability_confirmed'] >= 0.8:
-                    st.info("🌟 **High Confidence**: This object shows strong characteristics of an exoplanet candidate. Further validation recommended.")
+                if result['probability_confirmed'] >= 0.75:
+                    st.info("**High Confidence**: This object shows strong characteristics of an exoplanet candidate. Further validation recommended.")
                 elif result['probability_confirmed'] >= 0.5:
-                    st.warning("⚠️ **Medium Confidence**: This object shows some exoplanet-like characteristics but requires additional analysis.")
+                    st.warning("**Medium Confidence**: This object shows some exoplanet-like characteristics but requires additional analysis.")
                 else:
-                    st.error("❌ **Low Confidence**: This object is likely a false positive. Transit signal may be caused by stellar activity or instrumental noise.")
+                    st.error("**Low Confidence**: This object is likely a false positive. Transit signal may be caused by stellar activity or instrumental noise.")
                 
                 # Comparison Chart
-                st.markdown("### 📊 Probability Distribution")
+                st.markdown("### Probability Distribution")
                 
                 fig2 = go.Figure()
                 
                 categories = ['This Planet', 'Average', 'High Threshold']
-                values = [prob_percent, 50, 80]
+                values = [prob_percent, 50, 75]
                 colors = ['#FFD700', '#6C63FF', '#00FF88']
                 
                 fig2.add_trace(go.Bar(
@@ -225,41 +224,32 @@ if search_button and planet_query:
                 st.plotly_chart(fig2, use_container_width=True)
                 
             elif response.status_code == 404:
-                st.error("❌ Planet not found. Please check the ID or name and try again.")
-                st.info("💡 **Tip**: Try searching with the full KOI name (e.g., K00753.01) or numeric ID.")
+                st.error("Planet not found. Please check the ID or name and try again.")
+                st.info("**Tip**: Try searching with the full KOI name (e.g., K00753.01) or numeric ID.")
             else:
-                st.error(f"❌ Error: {response.json().get('detail', 'Unknown error')}")
+                st.error(f"Error: {response.json().get('detail', 'Unknown error')}")
                 
         except requests.exceptions.ConnectionError:
-            st.error("❌ Cannot connect to API. Make sure the backend is running.")
+            st.error("Cannot connect to API. Make sure the backend is running.")
             st.code("cd backend\npython -m uvicorn main:app --reload", language="bash")
         except requests.exceptions.Timeout:
-            st.error("⏱️ Request timed out. Please try again.")
+            st.error(" Request timed out. Please try again.")
         except Exception as e:
-            st.error(f"❌ An error occurred: {str(e)}")
+            st.error(f" An error occurred: {str(e)}")
 
 elif search_button and not planet_query:
-    st.warning("⚠️ Please enter a planet ID or name to search.")
+    st.warning("Please enter a planet ID or name to search.")
 
 # Sample Planets Section
 st.markdown("---")
-st.markdown("### 🔬 Sample Planets to Try")
+st.markdown("### Sample Planets to Try")
 
 sample_planets = [
     {"id": "10811496", "name": "K00753.01", "type": "False Positive"},
     {"id": "11818800", "name": "K00777.01", "type": "False Positive"},
-    {"id": "11918099", "name": "K00780.02", "type": "False Positive"},
+    {"id": "10319385", "name": "K01169.01", "type": "Confirmed"},
 ]
-
 cols = st.columns(len(sample_planets))
 for i, planet in enumerate(sample_planets):
     with cols[i]:
         st.info(f"**{planet['name']}**\nID: {planet['id']}\nType: {planet['type']}")
-
-# Footer
-st.markdown("---")
-st.markdown("""
-<div style='text-align: center; color: #888; padding: 20px;'>
-    <p>💫 Powered by Stellar Signal AI | Data from Kepler Space Telescope</p>
-</div>
-""", unsafe_allow_html=True)

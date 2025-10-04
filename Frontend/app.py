@@ -95,7 +95,7 @@ def show_home():
     # Metrics Section
     col1, col2, col3 = st.columns(3)
     col1.metric("Confirmed Planets", "2,340")
-    col2.metric("Detection Accuracy", "96.2%")
+    col2.metric("Detection Accuracy", "93%")
     col3.metric("Kepler Objects", "9,564")
 
     st.markdown("""
@@ -107,7 +107,7 @@ def show_home():
     st.markdown("Explore the Features")
 
     # Navigation Cards
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
 
     with col1:
         st.image("https://cdn-icons-png.flaticon.com/512/3209/3209265.png", width=120)
@@ -122,12 +122,7 @@ def show_home():
         if st.button("Go to Simulate & Inject"):
             st.switch_page("2_simulate_inject.py")
 
-    with col3:
-        st.image("Frontend/image.png", width=120)
-        st.subheader("Explanation & Visualization")
-        st.write("Understand how detections work and view data visualizations of signals.")
-        if st.button("Go to Explanation & Visualization"):
-            st.switch_page("3_explain_visualize.py")
+  
 
 
 show_home()

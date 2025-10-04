@@ -50,7 +50,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- Page Title ---
-st.title("🌌 Simulate & Inject")
+st.title("Simulate & Inject")
 st.write("Provide **KOI-style parameters** to generate a synthetic dataset and get AI predictions.")
 
 # Check API health
@@ -73,7 +73,7 @@ st.markdown("---")
 col1, col2 = st.columns(2)
 
 with col1:
-    st.subheader("🪐 Planet Transit Parameters")
+    st.subheader("Planet Transit Parameters")
     koi_period = st.number_input("koi_period (days)", min_value=0.1, max_value=1000.0, value=365.0, step=0.1)
     koi_time0bk = st.number_input("koi_time0bk (BKJD)", min_value=0.0, max_value=5000.0, value=134.5, step=0.1)
     koi_impact = st.slider("koi_impact (0 = central, 1 = grazing)", 0.0, 1.0, 0.5)
@@ -82,7 +82,7 @@ with col1:
     koi_prad = st.number_input("koi_prad (Earth radii)", min_value=0.1, max_value=20.0, value=1.0, step=0.1)
 
 with col2:
-    st.subheader("⭐ Stellar Properties")
+    st.subheader("Stellar Properties")
     koi_model_snr = st.number_input("koi_model_snr", min_value=0.1, max_value=1000.0, value=25.0, step=0.1)
     koi_steff = st.number_input("koi_steff (K)", min_value=2000, max_value=10000, value=5778, step=10)
     koi_slogg = st.number_input("koi_slogg (log g, cm/s²)", min_value=0.0, max_value=10.0, value=4.44, step=0.01)
@@ -95,13 +95,13 @@ st.markdown("---")
 col1, col2, col3 = st.columns([1, 1, 1])
 
 with col1:
-    predict_button = st.button("🔮 Predict with AI", use_container_width=True, type="primary")
+    predict_button = st.button("Predict with AI", use_container_width=True, type="primary")
 
 with col2:
-    generate_button = st.button("📊 Generate CSV", use_container_width=True)
+    generate_button = st.button("Generate CSV", use_container_width=True)
 
 with col3:
-    if st.button("🔄 Reset Values", use_container_width=True):
+    if st.button("Reset Values", use_container_width=True):
         st.rerun()
 
 # Create DataFrame from inputs
@@ -123,7 +123,7 @@ df = pd.DataFrame(data)
 
 # --- Predict with AI ---
 if predict_button:
-    with st.spinner("🤖 Running AI prediction..."):
+    with st.spinner("Running AI prediction..."):
         try:
             # Prepare data for API
             input_data = {
@@ -151,7 +151,7 @@ if predict_button:
                 result = response.json()
                 
                 st.markdown("---")
-                st.markdown("## 🎯 AI Prediction Results")
+                st.markdown("##  AI Prediction Results")
                 
                 # Display Results
                 st.markdown('<div class="prediction-box">', unsafe_allow_html=True)
@@ -209,19 +209,19 @@ if predict_button:
                 st.plotly_chart(fig, use_container_width=True)
                 
                 # Interpretation
-                st.markdown("### 📝 AI Interpretation")
+                st.markdown("###  AI Interpretation")
                 
                 prob_percent = result['probability_candidate'] * 100
                 
                 if prob_percent >= 80:
-                    st.success("🌟 **High Confidence Detection**: This signal shows strong characteristics of an exoplanet transit. The AI model is highly confident this is a genuine planetary candidate.")
+                    st.success(" **High Confidence Detection**: This signal shows strong characteristics of an exoplanet transit. The AI model is highly confident this is a genuine planetary candidate.")
                 elif prob_percent >= 50:
-                    st.warning("⚠️ **Medium Confidence**: The signal shows some exoplanet-like characteristics, but additional validation is recommended. Consider checking for stellar activity or instrumental artifacts.")
+                    st.warning(" **Medium Confidence**: The signal shows some exoplanet-like characteristics, but additional validation is recommended. Consider checking for stellar activity or instrumental artifacts.")
                 else:
-                    st.error("❌ **Likely False Positive**: The AI model suggests this signal is probably not a genuine planetary transit. It may be caused by stellar variability, eclipsing binaries, or instrumental noise.")
+                    st.error(" **Likely False Positive**: The AI model suggests this signal is probably not a genuine planetary transit. It may be caused by stellar variability, eclipsing binaries, or instrumental noise.")
                 
                 # Comparison Chart
-                st.markdown("### 📊 Probability Breakdown")
+                st.markdown("###  Probability Breakdown")
                 
                 fig2 = go.Figure(data=[
                     go.Bar(
@@ -265,7 +265,7 @@ if generate_button:
     
     # Download button
     st.download_button(
-        label="📥 Download Simulated CSV",
+        label=" Download Simulated CSV",
         data=buffer,
         file_name="simulated_exoplanet.csv",
         mime="text/csv",
@@ -273,19 +273,19 @@ if generate_button:
     )
     
     # Show preview table
-    st.subheader("🔍 Preview of Generated Data")
+    st.subheader(" Preview of Generated Data")
     st.dataframe(df, use_container_width=True)
 
 # --- Input Data Preview ---
 st.markdown("---")
-st.subheader("📋 Current Input Parameters")
+st.subheader(" Current Input Parameters")
 st.dataframe(df, use_container_width=True)
 
 # --- Information Section ---
 st.markdown("---")
-st.markdown("### ℹ️ How It Works")
+st.markdown("### How It Works")
 
-with st.expander("🔬 About the Parameters"):
+with st.expander(" About the Parameters"):
     st.markdown("""
     **Transit Parameters:**
     - **koi_period**: Orbital period in days
@@ -303,7 +303,7 @@ with st.expander("🔬 About the Parameters"):
     - **koi_kepmag**: Kepler magnitude (brightness)
     """)
 
-with st.expander("🤖 About the AI Model"):
+with st.expander(" About the AI Model"):
     st.markdown("""
     The AI model uses **CatBoost**, a gradient boosting algorithm trained on thousands of Kepler 
     exoplanet observations. It analyzes the input parameters to determine if the signal is likely 
@@ -315,10 +315,3 @@ with st.expander("🤖 About the AI Model"):
     - **Candidate Probability < 50%**: Likely false positive
     """)
 
-# Footer
-st.markdown("---")
-st.markdown("""
-<div style='text-align: center; color: #888; padding: 20px;'>
-    <p>🌟 Powered by Stellar Signal AI | CatBoost Machine Learning Model</p>
-</div>
-""", unsafe_allow_html=True)
