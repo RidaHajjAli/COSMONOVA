@@ -123,7 +123,7 @@ def show_home():
             st.switch_page("2_simulate_inject.py")
 
     with col3:
-        st.image("image.png", width=120)
+        st.image("Frontend/image.png", width=120)
         st.subheader("Explanation & Visualization")
         st.write("Understand how detections work and view data visualizations of signals.")
         if st.button("Go to Explanation & Visualization"):
