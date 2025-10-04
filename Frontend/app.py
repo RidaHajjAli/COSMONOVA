@@ -77,11 +77,11 @@ st.markdown("""
             margin-left:50px;}
 
     .stImage{
-            margin-left:100px;}
-    div.stButton > button:hover {
+            margin-left:100px;}    
+            div.stButton > button:hover {
         background-color: #3c429c;
         transform: scale(1.05);
-    }
+            
 </style>
 """, unsafe_allow_html=True)
 
@@ -120,7 +120,7 @@ def show_home():
         st.subheader("Simulate & Inject")
         st.write("Simulate planetary transit signals and inject them into light curves.")
         if st.button("Go to Simulate & Inject"):
-            st.switch_page("2_simulate_inject.py")
+            st.switch_page("pages/2_simulate_inject.py")
 
   
 

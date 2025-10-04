@@ -153,8 +153,6 @@ if predict_button:
                 st.markdown("---")
                 st.markdown("##  AI Prediction Results")
                 
-                # Display Results
-                st.markdown('<div class="prediction-box">', unsafe_allow_html=True)
                 
                 col1, col2 = st.columns([2, 1])
                 
@@ -188,8 +186,8 @@ if predict_button:
                         'bordercolor': "white",
                         'steps': [
                             {'range': [0, 50], 'color': 'rgba(255, 107, 107, 0.3)'},
-                            {'range': [50, 80], 'color': 'rgba(255, 215, 0, 0.3)'},
-                            {'range': [80, 100], 'color': 'rgba(0, 255, 136, 0.3)'}
+                            {'range': [50, 75], 'color': 'rgba(255, 215, 0, 0.3)'},
+                            {'range': [75, 100], 'color': 'rgba(0, 255, 136, 0.3)'}
                         ],
                         'threshold': {
                             'line': {'color': "white", 'width': 4},
@@ -213,7 +211,7 @@ if predict_button:
                 
                 prob_percent = result['probability_candidate'] * 100
                 
-                if prob_percent >= 80:
+                if prob_percent >= 75:
                     st.success(" **High Confidence Detection**: This signal shows strong characteristics of an exoplanet transit. The AI model is highly confident this is a genuine planetary candidate.")
                 elif prob_percent >= 50:
                     st.warning(" **Medium Confidence**: The signal shows some exoplanet-like characteristics, but additional validation is recommended. Consider checking for stellar activity or instrumental artifacts.")
@@ -256,25 +254,24 @@ if predict_button:
 
 # --- Generate CSV ---
 if generate_button:
-    # Save to CSV in memory
-    buffer = io.StringIO()
-    df.to_csv(buffer, index=False)
-    buffer.seek(0)
+    # Convert DataFrame directly to CSV string
+    csv_data = df.to_csv(index=False)
     
     st.success("✅ CSV generated successfully!")
     
     # Download button
     st.download_button(
-        label=" Download Simulated CSV",
-        data=buffer,
+        label="📥 Download Simulated CSV",
+        data=csv_data,
         file_name="simulated_exoplanet.csv",
         mime="text/csv",
         use_container_width=True
     )
     
     # Show preview table
-    st.subheader(" Preview of Generated Data")
+    st.subheader("🔍 Preview of Generated Data")
     st.dataframe(df, use_container_width=True)
+
 
 # --- Input Data Preview ---
 st.markdown("---")
@@ -310,8 +307,8 @@ with st.expander(" About the AI Model"):
     a genuine exoplanet candidate or a false positive.
     
     **Classification Criteria:**
-    - **Candidate Probability > 80%**: High confidence detection
-    - **Candidate Probability 50-80%**: Medium confidence
+    - **Candidate Probability > 75%**: High confidence detection
+    - **Candidate Probability 50-75%**: Medium confidence
     - **Candidate Probability < 50%**: Likely false positive
     """)
 
