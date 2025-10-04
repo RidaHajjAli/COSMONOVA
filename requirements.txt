@@ -5,3 +5,5 @@ pydantic
 python-multipart
 streamlit
 plotly
+numpy 
+catboost
