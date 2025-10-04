@@ -40,8 +40,11 @@ COSMONOVA/
 │     ├─ 1_upload_detect.py
 │     ├─ 2_simulate_inject.py
 ├─ ml-pipeline/
-│  └─ model/
-│     └─ catboost_model.cbm          # Trained CatBoost model (expected)
+│  ├─ model/
+│  │  └─ catboost_model.cbm          # Trained CatBoost model
+│  ├─ notebooks/
+│  ├─ results/
+│  └─ dataset/
 ├─ requirements.txt
 ├─ LICENSE
 └─ README.md
