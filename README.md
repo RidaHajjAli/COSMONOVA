@@ -171,6 +171,13 @@ Pages:
 
 By default, the UI expects the API to be available on `http://localhost:8000`. If you change the backend host/port, ensure any frontend calls are updated accordingly.
 
+## Demo
+---
+
+### Demo Video of the Website
+
+[🎥 Watch the Demo Video](./Deliverables/30s%20vid%20-%20Cosmonova%20team.mp4)
+
 
 Configuration
 -------------
