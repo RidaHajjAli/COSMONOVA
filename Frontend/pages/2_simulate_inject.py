@@ -125,19 +125,19 @@ df = pd.DataFrame(data)
 if predict_button:
     with st.spinner("Running AI prediction..."):
         try:
-            # Prepare data for API
+            # Prepare data for API (API expects koi_ prefix)
             input_data = {
-                "period": period,
-                "time0bk": time0bk,
-                "impact": impact,
-                "duration": duration,
-                "depth": depth,
-                "prad": prad,
-                "model_snr": model_snr,
-                "steff": steff,
-                "slogg": slogg,
-                "srad": srad,
-                "kepmag": kepmag,
+                "koi_period": period,
+                "koi_time0bk": time0bk,
+                "koi_impact": impact,
+                "koi_duration": duration,
+                "koi_depth": depth,
+                "koi_prad": prad,
+                "koi_model_snr": model_snr,
+                "koi_steff": steff,
+                "koi_slogg": slogg,
+                "koi_srad": srad,
+                "koi_kepmag": kepmag,
             }
             
             # Call prediction API
@@ -261,7 +261,7 @@ if generate_button:
     
     # Download button
     st.download_button(
-        label="Download Simulated CSV",
+        label="📥 Download Simulated CSV",
         data=csv_data,
         file_name="simulated_exoplanet.csv",
         mime="text/csv",
@@ -269,7 +269,7 @@ if generate_button:
     )
     
     # Show preview table
-    st.subheader("Preview of Generated Data")
+    st.subheader("🔍 Preview of Generated Data")
     st.dataframe(df, use_container_width=True)
 
 
