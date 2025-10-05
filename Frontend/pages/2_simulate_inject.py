@@ -12,7 +12,7 @@ API_BASE_URL = "http://localhost:8000"
 st.set_page_config(
     page_title="Stellar Signal",
     page_icon="Frontend/images/logo.png",
-    layout="wide"
+    layout="centered"
 )
 
 st.markdown("""
