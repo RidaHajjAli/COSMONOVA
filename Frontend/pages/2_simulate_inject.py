@@ -8,6 +8,13 @@ import plotly.graph_objects as go
 API_BASE_URL = "http://localhost:8000"
 
 # --- Page Styling ---
+
+st.set_page_config(
+    page_title="Stellar Signal",
+    page_icon="Frontend/images/logo.png",
+    layout="wide"
+)
+
 st.markdown("""
 <style>
     .stAppDeployButton {visibility: hidden;}

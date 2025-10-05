@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 # ================================
 st.set_page_config(
     page_title="Stellar Signal",
-    page_icon="✨",
+    page_icon="Frontend/images/logo.png",
     layout="wide"
 )
 
@@ -118,7 +118,7 @@ def show_home():
     with col2:
         st.image("https://cdn-icons-png.flaticon.com/512/2907/2907253.png", width=120)
         st.subheader("Simulate & Inject")
-        st.write("Simulate planetary transit signals and inject them into light curves.")
+        st.write("Provide parameters to generate a synthetic dataset and get AI predictions.")
         if st.button("Go to Simulate & Inject"):
             st.switch_page("pages/2_simulate_inject.py")
 
