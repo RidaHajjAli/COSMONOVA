@@ -8,6 +8,11 @@ from plotly.subplots import make_subplots
 API_BASE_URL = "http://localhost:8000"
 
 # Page Styling
+st.set_page_config(
+    page_title="Stellar Signal",
+    page_icon="Frontend/images/logo.png",
+    layout="centered"
+)
 st.markdown("""
 <style>
     .stAppDeployButton {visibility: hidden;}

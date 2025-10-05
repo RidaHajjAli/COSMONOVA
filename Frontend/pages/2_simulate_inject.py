@@ -8,6 +8,13 @@ import plotly.graph_objects as go
 API_BASE_URL = "http://localhost:8000"
 
 # --- Page Styling ---
+
+st.set_page_config(
+    page_title="Stellar Signal",
+    page_icon="Frontend/images/logo.png",
+    layout="centered"
+)
+
 st.markdown("""
 <style>
     .stAppDeployButton {visibility: hidden;}
@@ -51,7 +58,7 @@ st.markdown("""
 
 # --- Page Title ---
 st.title("Simulate & Inject")
-st.write("Provide **KOI-style parameters** to generate a synthetic dataset and get AI predictions.")
+st.write("Provide **parameters** to generate a synthetic dataset and get AI predictions.")
 
 # Check API health
 try:
@@ -74,20 +81,20 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.subheader("Planet Transit Parameters")
-    koi_period = st.number_input("koi_period (days)", min_value=0.1, max_value=1000.0, value=365.0, step=0.1)
-    koi_time0bk = st.number_input("koi_time0bk (BKJD)", min_value=0.0, max_value=5000.0, value=134.5, step=0.1)
-    koi_impact = st.slider("koi_impact (0 = central, 1 = grazing)", 0.0, 1.0, 0.5)
-    koi_duration = st.number_input("koi_duration (hours)", min_value=0.1, max_value=72.0, value=10.0, step=0.1)
-    koi_depth = st.number_input("koi_depth (ppm)", min_value=10, max_value=100000, value=500, step=10)
-    koi_prad = st.number_input("koi_prad (Earth radii)", min_value=0.1, max_value=20.0, value=1.0, step=0.1)
+    period = st.number_input("period (days)", min_value=0.1, max_value=1000.0, value=365.0, step=0.1)
+    time0bk = st.number_input("time0bk (BKJD)", min_value=0.0, max_value=5000.0, value=134.5, step=0.1)
+    impact = st.slider("impact (0 = central, 1 = grazing)", 0.0, 1.0, 0.5)
+    duration = st.number_input("duration (hours)", min_value=0.1, max_value=72.0, value=10.0, step=0.1)
+    depth = st.number_input("depth (ppm)", min_value=10, max_value=100000, value=500, step=10)
+    prad = st.number_input("prad (Earth radii)", min_value=0.1, max_value=20.0, value=1.0, step=0.1)
 
 with col2:
     st.subheader("Stellar Properties")
-    koi_model_snr = st.number_input("koi_model_snr", min_value=0.1, max_value=1000.0, value=25.0, step=0.1)
-    koi_steff = st.number_input("koi_steff (K)", min_value=2000, max_value=10000, value=5778, step=10)
-    koi_slogg = st.number_input("koi_slogg (log g, cm/s²)", min_value=0.0, max_value=10.0, value=4.44, step=0.01)
-    koi_srad = st.number_input("koi_srad (Solar radii)", min_value=0.1, max_value=50.0, value=1.0, step=0.1)
-    koi_kepmag = st.number_input("koi_kepmag (Kepler magnitude)", min_value=5.0, max_value=20.0, value=12.0, step=0.1)
+    model_snr = st.number_input("model_snr", min_value=0.1, max_value=1000.0, value=25.0, step=0.1)
+    steff = st.number_input("steff (K)", min_value=2000, max_value=10000, value=5778, step=10)
+    slogg = st.number_input("slogg (log g, cm/s²)", min_value=0.0, max_value=10.0, value=4.44, step=0.01)
+    srad = st.number_input("srad (Solar radii)", min_value=0.1, max_value=50.0, value=1.0, step=0.1)
+    kepmag = st.number_input("kepmag (Kepler magnitude)", min_value=5.0, max_value=20.0, value=12.0, step=0.1)
 
 st.markdown("---")
 
@@ -106,17 +113,17 @@ with col3:
 
 # Create DataFrame from inputs
 data = {
-    "koi_period": [koi_period],
-    "koi_time0bk": [koi_time0bk],
-    "koi_impact": [koi_impact],
-    "koi_duration": [koi_duration],
-    "koi_depth": [koi_depth],
-    "koi_prad": [koi_prad],
-    "koi_model_snr": [koi_model_snr],
-    "koi_steff": [koi_steff],
-    "koi_slogg": [koi_slogg],
-    "koi_srad": [koi_srad],
-    "koi_kepmag": [koi_kepmag],
+    "period": [period],
+    "time0bk": [time0bk],
+    "impact": [impact],
+    "duration": [duration],
+    "depth": [depth],
+    "prad": [prad],
+    "model_snr": [model_snr],
+    "steff": [steff],
+    "slogg": [slogg],
+    "srad": [srad],
+    "kepmag": [kepmag],
 }
 
 df = pd.DataFrame(data)
@@ -125,19 +132,19 @@ df = pd.DataFrame(data)
 if predict_button:
     with st.spinner("Running AI prediction..."):
         try:
-            # Prepare data for API
+            # Prepare data for API (API expects koi_ prefix)
             input_data = {
-                "koi_period": koi_period,
-                "koi_time0bk": koi_time0bk,
-                "koi_impact": koi_impact,
-                "koi_duration": koi_duration,
-                "koi_depth": koi_depth,
-                "koi_prad": koi_prad,
-                "koi_model_snr": koi_model_snr,
-                "koi_steff": koi_steff,
-                "koi_slogg": koi_slogg,
-                "koi_srad": koi_srad,
-                "koi_kepmag": koi_kepmag,
+                "koi_period": period,
+                "koi_time0bk": time0bk,
+                "koi_impact": impact,
+                "koi_duration": duration,
+                "koi_depth": depth,
+                "koi_prad": prad,
+                "koi_model_snr": model_snr,
+                "koi_steff": steff,
+                "koi_slogg": slogg,
+                "koi_srad": srad,
+                "koi_kepmag": kepmag,
             }
             
             # Call prediction API
@@ -153,8 +160,6 @@ if predict_button:
                 st.markdown("---")
                 st.markdown("##  AI Prediction Results")
                 
-                # Display Results
-                st.markdown('<div class="prediction-box">', unsafe_allow_html=True)
                 
                 col1, col2 = st.columns([2, 1])
                 
@@ -188,8 +193,8 @@ if predict_button:
                         'bordercolor': "white",
                         'steps': [
                             {'range': [0, 50], 'color': 'rgba(255, 107, 107, 0.3)'},
-                            {'range': [50, 80], 'color': 'rgba(255, 215, 0, 0.3)'},
-                            {'range': [80, 100], 'color': 'rgba(0, 255, 136, 0.3)'}
+                            {'range': [50, 75], 'color': 'rgba(255, 215, 0, 0.3)'},
+                            {'range': [75, 100], 'color': 'rgba(0, 255, 136, 0.3)'}
                         ],
                         'threshold': {
                             'line': {'color': "white", 'width': 4},
@@ -213,7 +218,7 @@ if predict_button:
                 
                 prob_percent = result['probability_candidate'] * 100
                 
-                if prob_percent >= 80:
+                if prob_percent >= 75:
                     st.success(" **High Confidence Detection**: This signal shows strong characteristics of an exoplanet transit. The AI model is highly confident this is a genuine planetary candidate.")
                 elif prob_percent >= 50:
                     st.warning(" **Medium Confidence**: The signal shows some exoplanet-like characteristics, but additional validation is recommended. Consider checking for stellar activity or instrumental artifacts.")
@@ -256,25 +261,24 @@ if predict_button:
 
 # --- Generate CSV ---
 if generate_button:
-    # Save to CSV in memory
-    buffer = io.StringIO()
-    df.to_csv(buffer, index=False)
-    buffer.seek(0)
+    # Convert DataFrame directly to CSV string
+    csv_data = df.to_csv(index=False)
     
     st.success("✅ CSV generated successfully!")
     
     # Download button
     st.download_button(
-        label=" Download Simulated CSV",
-        data=buffer,
+        label="📥 Download Simulated CSV",
+        data=csv_data,
         file_name="simulated_exoplanet.csv",
         mime="text/csv",
         use_container_width=True
     )
     
     # Show preview table
-    st.subheader(" Preview of Generated Data")
+    st.subheader("🔍 Preview of Generated Data")
     st.dataframe(df, use_container_width=True)
+
 
 # --- Input Data Preview ---
 st.markdown("---")
@@ -288,19 +292,19 @@ st.markdown("### How It Works")
 with st.expander(" About the Parameters"):
     st.markdown("""
     **Transit Parameters:**
-    - **koi_period**: Orbital period in days
-    - **koi_time0bk**: Time of first transit in Barycentric Kepler Julian Date
-    - **koi_impact**: Impact parameter (0 = central transit, 1 = grazing)
-    - **koi_duration**: Transit duration in hours
-    - **koi_depth**: Transit depth in parts per million (ppm)
-    - **koi_prad**: Planet radius in Earth radii
+    - **period**: Orbital period in days
+    - **time0bk**: Time of first transit in Barycentric Kepler Julian Date
+    - **impact**: Impact parameter (0 = central transit, 1 = grazing)
+    - **duration**: Transit duration in hours
+    - **depth**: Transit depth in parts per million (ppm)
+    - **prad**: Planet radius in Earth radii
     
     **Stellar Parameters:**
-    - **koi_model_snr**: Signal-to-noise ratio
-    - **koi_steff**: Stellar effective temperature in Kelvin
-    - **koi_slogg**: Stellar surface gravity
-    - **koi_srad**: Stellar radius in Solar radii
-    - **koi_kepmag**: Kepler magnitude (brightness)
+    - **model_snr**: Signal-to-noise ratio
+    - **steff**: Stellar effective temperature in Kelvin
+    - **slogg**: Stellar surface gravity
+    - **srad**: Stellar radius in Solar radii
+    - **kepmag**: Kepler magnitude (brightness)
     """)
 
 with st.expander(" About the AI Model"):
@@ -310,8 +314,7 @@ with st.expander(" About the AI Model"):
     a genuine exoplanet candidate or a false positive.
     
     **Classification Criteria:**
-    - **Candidate Probability > 80%**: High confidence detection
-    - **Candidate Probability 50-80%**: Medium confidence
+    - **Candidate Probability > 75%**: High confidence detection
+    - **Candidate Probability 50-75%**: Medium confidence
     - **Candidate Probability < 50%**: Likely false positive
     """)
-
