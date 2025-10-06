@@ -171,10 +171,8 @@ Pages:
 
 By default, the UI expects the API to be available on `http://localhost:8000`. If you change the backend host/port, ensure any frontend calls are updated accordingly.
 
-## Demo
+## Demo about the Project
 ---
-
-### Demo Video of the Website
 
 https://github.com/user-attachments/assets/a6518853-1d67-4606-ab0e-c47296be63ea
 
