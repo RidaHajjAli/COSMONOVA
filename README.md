@@ -176,7 +176,7 @@ By default, the UI expects the API to be available on `http://localhost:8000`. I
 
 ### Demo Video of the Website
 
-[🎥 Watch the Demo Video](./Deliverables/30s%20vid%20-%20Cosmonova%20team.mp4)
+https://github.com/user-attachments/assets/a6518853-1d67-4606-ab0e-c47296be63ea
 
 
 Configuration
